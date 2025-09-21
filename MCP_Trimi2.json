@@ -1,0 +1,170 @@
+{
+  "name": "MCP_Trimi2",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "b6d25bc2-81b8-4a93-aaa6-ee0cede874a5"
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpTrigger",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "960f6c3a-68f9-4525-af62-39b852d8918a",
+      "name": "MCP Server Trigger",
+      "webhookId": "b6d25bc2-81b8-4a93-aaa6-ee0cede874a5"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "projectId": "=tremia-d53be",
+        "collection": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Collection', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.googleFirebaseCloudFirestoreTool",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        256
+      ],
+      "id": "e073835b-5867-4894-8daa-96aeda517c71",
+      "name": "ObtenerInformacionBaseDatos",
+      "credentials": {
+        "googleFirebaseCloudFirestoreOAuth2Api": {
+          "id": "JUrOwWaohEIrQFF8",
+          "name": "Google Firebase Cloud Firestore account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "projectId": "=tremia-d53be",
+        "collection": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Collection', ``, 'string') }}",
+        "columns": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Columns___Attributes', ``, 'string') }}"
+      },
+      "type": "n8n-nodes-base.googleFirebaseCloudFirestoreTool",
+      "typeVersion": 1.1,
+      "position": [
+        208,
+        256
+      ],
+      "id": "1292cafa-7fc1-4d77-ba87-04dc5522f645",
+      "name": "Crear evento base datos",
+      "credentials": {
+        "googleFirebaseCloudFirestoreOAuth2Api": {
+          "id": "JUrOwWaohEIrQFF8",
+          "name": "Google Firebase Cloud Firestore account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "chatId": "6376748584",
+        "text": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', ``, 'string') }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegramTool",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        256
+      ],
+      "id": "a3ef40c4-5174-45e7-b86f-6b924b0a591a",
+      "name": "EnviarmensajeTelegram",
+      "webhookId": "1b9aef72-9928-49d0-a94c-967e6a43796f",
+      "credentials": {
+        "telegramApi": {
+          "id": "vaMHqPQvGBsWupeq",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('To', ``, 'string') }}",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        256
+      ],
+      "id": "692e9b83-0595-4df3-8601-c01b5c7e0255",
+      "name": "EnviarCorreo",
+      "webhookId": "76ed6117-b475-43a9-aa98-46f1ef2f1933",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "ULJ1TMfs4IJaG4CD",
+          "name": "Gmail account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "ObtenerInformacionBaseDatos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crear evento base datos": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnviarmensajeTelegram": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnviarCorreo": {
+      "ai_tool": [
+        [
+          {
+            "node": "MCP Server Trigger",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9910c72f-0d22-4a1e-9d06-dd763cdce004",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f6ad6184afacd5e797d666dedbf473ee1ad3d4c1b24ff726a96fc1a21a4f19b"
+  },
+  "id": "UBvKg1MKEOPtoWnL",
+  "tags": []
+}

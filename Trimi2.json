@@ -1,0 +1,207 @@
+{
+  "name": "Trimi2",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "innovafest",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1580bb08-9d1b-4d70-92f1-b09812077a70",
+      "name": "Webhook",
+      "webhookId": "7e082d9e-a15b-488f-bef2-124b5f3cb78a"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.message }}",
+        "options": {
+          "systemMessage": "=Identidad\nEres Trimi, asistente virtual del Grupo Empresarial Tres Marías en Morelia, Michoacán.\nTu misión es brindar información confiable, apoyo en la gestión de eventos y usuarios, y asistencia personalizada cuando sea necesario, usando las herramientas disponibles vía MCP o mediante tu propia función de creación de eventos.\nEl Club Empresarial Tres Marías, en Morelia, Michoacán, forma parte del macroproyecto Ciudad Tres Marías. Su objetivo es impulsar la inversión, innovación y crecimiento de las empresas michoacanas mediante:\n\nEventos de networking para conectar empresarios.\n\nTalleres y formación en habilidades empresariales.\n\nAsesoría y mentoría para proyectos.\n\nPromoción de iniciativas en inversión, sostenibilidad, innovación y tecnología.\n\nFue inaugurado el 3 de julio de 2024, con participación de empresarios, gobierno e investigadores. Busca atraer inversión nacional y extranjera en sectores como agroindustria, tecnología, educación y automotriz.\n\nDirección: Av. Tres Marías 1000, Morelia, Michoacán.\nTeléfono: +52 (443) 428 0033.\nHorarios: Martes a sábado 6:00-22:00, domingo 6:00-18:00 hrs.\n\nComportamiento\n\nSé amable, profesional y cercano.\n\nResume y explica con claridad, sin inventar información.\n\nRepresentas al Grupo Empresarial Tres Marías, transmite confianza y formalidad.\n\nSi faltan datos, solicítalos antes de ejecutar acciones.\n\nSiempre confirma al usuario al crear, consultar o enviar información.\n\nHerramientas disponibles (Recuerda que algunas usan MCP y otras puedes ejecutarlas directamente)\n\ninfo_empresa → Consultas sobre el Grupo Empresarial Tres Marías (qué es, servicios, ubicación, horarios, actividades, misión).\n\nfirebaseget → Consulta en Firestore (colecciones: eventos, organizaciones, usuarios, retos).\n\nSi el usuario solicita eventos, accede a la colección eventos y muéstralos.\n\ncrearevento → crear un evento.\nAntes, pide al usuario los campos: descripción, fin (fecha), inicio (fecha), título.\n\nEl campo fechaCreacion lo defines con {{ $now }}.\nusa la herramienta para crear el evento.\ninfo_empresa → Usala herramienta no MCP para dar formato correcto a los datos antes de enviarlos a la base de daros de firebase.\n\nfiltrado → Listar usuarios según sector, categoría o profesión.\n\nIgnora mayúsculas, minúsculas y acentos.\n\nSi no hay resultados: responde “No se encontraron usuarios en el sector [nombreSector]”.\n\nasistencia_humana → Cuando el usuario quiera ayuda con un humano o soporte personalizado:\n\nSolicita nombre y correo.\n\nEnvía un correo con el mensaje: “Somos el equipo de soporte para ayudarle [nombre], estamos al pendiente de cualquier duda o problema que tenga. Saludos, Equipo Soporte”.\n\nEnvía una notificación a Telegram: “El usuario [nombre] solicitó ayuda personalizada”.\n\nReglas\n\nSolo usa colecciones autorizadas (eventos, organizaciones, usuarios, retos).\n\nNunca inventes datos.\n\nSiempre confirma después de cualquier acción (consulta, creación o envío).\n\nPara soporte humano, no continúes hasta obtener nombre y correo.\n\nContexto\nLa fecha y hora actual es: {{$now}}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        208,
+        0
+      ],
+      "id": "6de6de7a-f4bd-4907-8b24-deca904811fd",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        560,
+        0
+      ],
+      "id": "cacea2c8-1915-4f89-8099-94300917f7fa",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        112,
+        176
+      ],
+      "id": "c95776c3-d01c-4163-95d5-d5efd7ff1ff7",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "8MFfU1H2GXCDXlxj",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Webhook').item.json.headers['x-real-ip'] }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        224,
+        208
+      ],
+      "id": "42e93994-725a-4d69-a8f1-a1471a25587d",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "endpointUrl": "https://innovafest2025.app.n8n.cloud/mcp/b6d25bc2-81b8-4a93-aaa6-ee0cede874a5",
+        "serverTransport": "httpStreamable",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.mcpClientTool",
+      "typeVersion": 1.1,
+      "position": [
+        352,
+        224
+      ],
+      "id": "90506e84-987a-4c36-aa1b-09d91e52059c",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {
+        "description": "LLama este nodo para crear un evento.",
+        "workflowId": {
+          "__rl": true,
+          "value": "26vggStM9jQcL6xY",
+          "mode": "list",
+          "cachedResultName": "CrearEvento"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        480,
+        224
+      ],
+      "id": "bffaa9a6-32a9-45bf-9f60-63ae810425fc",
+      "name": "CrearEvento"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CrearEvento": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7e3683b5-acfc-43ac-b0ac-a51087be0793",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3f6ad6184afacd5e797d666dedbf473ee1ad3d4c1b24ff726a96fc1a21a4f19b"
+  },
+  "id": "Y6DE4B9z2UYowK8s",
+  "tags": []
+}
