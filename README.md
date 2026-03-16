@@ -33,6 +33,6 @@ Para que el bot funcione correctamente, es necesario configurar las siguientes c
 ## 🚀 Instalación
 1. Importa los archivos `.json` en tu instancia de n8n.
 2. [cite_start]Asegúrate de que el nodo **MCP Client** en el flujo principal esté apuntando a la URL del webhook de tu **MCP Server Trigger**[cite: 13, 14].
-3. [cite_start]Configura el `projectId` de Firebase en los nodos correspondientes (actualmente configurado como `tremia-d53be`)[cite: 15].
+3. [cite_start]Configura el `projectId` de Firebase en los nodos correspondientes[cite: 15].
 
 ---
